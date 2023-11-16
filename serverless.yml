@@ -1,0 +1,38 @@
+# serverless.yml
+
+service: cloud-voult-one
+	
+useDotenv: true
+
+	
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region: ap-south-1
+  profile: cloud_computing
+  environment:
+    M_MONGO_URI: ${env:M_MONGO_URI}
+    M_AWS_ACCESS_KEY: ${env:M_AWS_ACCESS_KEY}
+    M_AWS_SECRET_ACCESS_KEY: ${env:M_AWS_SECRET_ACCESS_KEY}
+    M_JWT_SECRET: ${env:M_JWT_SECRET}
+
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /test
+          method: GET
+          cors: true
+      - http:
+          path: /{any+}
+          method: ANY
+          cors: true
